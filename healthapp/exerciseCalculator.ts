@@ -1,3 +1,5 @@
+import isNotNumber from './utils.ts';
+
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -7,6 +9,28 @@ interface Result {
   target: number;
   average: number;
 }
+
+interface ExerciseValues {
+  target: number;
+  dailyHours: number[];
+}
+
+const parseExerciseArguments = (args: string[]): ExerciseValues => {
+  if (args.length < 2) {
+    throw new Error('Usage: npm run calculateExercises <target> <hours day 1> [<hours day 2> ...]');
+  }
+  if (args.some(isNotNumber)) {
+    throw new Error('All arguments must be numbers');
+  }
+  const [target, ...dailyHours] = args.map(Number);
+  if (target <= 0) {
+    throw new Error('Target must be greater than zero');
+  }
+  if (dailyHours.some(h => h < 0)) {
+    throw new Error('Daily hours cannot be negative');
+  }
+  return { target, dailyHours };
+};
 
 const calculateExercises = (dailyHours: number[], target: number): Result => {
   const periodLength = dailyHours.length;
@@ -29,15 +53,16 @@ const calculateExercises = (dailyHours: number[], target: number): Result => {
     ratingDescription = 'you need to train more';
   }
 
-  return {
-    periodLength,
-    trainingDays,
-    success,
-    rating,
-    ratingDescription,
-    target,
-    average,
-  };
+  return { periodLength, trainingDays, success, rating, ratingDescription, target, average };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const { target, dailyHours } = parseExerciseArguments(process.argv.slice(2));
+  console.log(calculateExercises(dailyHours, target));
+} catch (error: unknown) {
+  let message = 'Something went wrong.';
+  if (error instanceof Error) {
+    message += ' Error: ' + error.message;
+  }
+  console.log(message);
+}

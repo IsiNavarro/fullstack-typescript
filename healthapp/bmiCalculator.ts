@@ -46,13 +46,18 @@ const calculateBmi = (heightCm: number, weightKg: number): BmiCategory => {
 };
 
 
-try {
-    const {height, weight} = parseBmiArguments(process.argv.slice(2))
-    console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-    let message = 'Something went wrong...'
-    if (error instanceof Error) {
-        message += ' Error: ' + error.message
+if (import.meta.main) {
+    try {
+        const {height, weight} = parseBmiArguments(process.argv.slice(2))
+        console.log(calculateBmi(height, weight));
+    } 
+    catch (error: unknown) {
+        let message = 'Something went wrong...'
+        if (error instanceof Error) {
+            message += ' Error: ' + error.message
+        }
+        console.log(message)
     }
-    console.log(message)
 }
+
+export default calculateBmi

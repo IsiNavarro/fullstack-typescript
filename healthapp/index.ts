@@ -1,6 +1,6 @@
 import express from 'express'
-import isNotNumber from './utils.ts'
-import calculateBmi from './bmiCalculator.ts'
+import {isNotNumber} from './utils.ts'
+import {calculateBmi} from './bmiCalculator.ts'
 
 const app = express()
 

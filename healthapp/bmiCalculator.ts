@@ -1,4 +1,4 @@
-import isNotNumber from "./utils.ts";
+import {isNotNumber} from "./utils.ts";
 
 interface BmiArguments {
     height: number,
@@ -60,4 +60,4 @@ if (import.meta.main) {
     }
 }
 
-export default calculateBmi
+export  {calculateBmi}

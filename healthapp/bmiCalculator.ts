@@ -7,7 +7,7 @@ interface BmiArguments {
 
 const parseBmiArguments = (args: string[]): BmiArguments => {
     if (args.length !== 2) {
-        throw new Error('Usage: npm run calculateBmi <height in cm> <weight in kg>')
+        throw new Error('Usage: npm run calculateBmi <height in cm> <weight in kg>');
     } 
     const [heightArg, weightArg] = args;
     if (isNotNumber(heightArg) || isNotNumber(weightArg)) {
@@ -48,16 +48,16 @@ const calculateBmi = (heightCm: number, weightKg: number): BmiCategory => {
 
 if (import.meta.main) {
     try {
-        const {height, weight} = parseBmiArguments(process.argv.slice(2))
+        const {height, weight} = parseBmiArguments(process.argv.slice(2));
         console.log(calculateBmi(height, weight));
     } 
     catch (error: unknown) {
-        let message = 'Something went wrong...'
+        let message = 'Something went wrong...';
         if (error instanceof Error) {
-            message += ' Error: ' + error.message
+            message += ' Error: ' + error.message;
         }
-        console.log(message)
+        console.log(message);
     }
 }
 
-export  {calculateBmi}
+export  {calculateBmi};

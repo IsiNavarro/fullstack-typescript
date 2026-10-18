@@ -32,7 +32,7 @@ const parseExerciseArguments = (args: string[]): ExerciseValues => {
   return { target, dailyHours };
 };
 
-const calculateExercises = (dailyHours: number[], target: number): Result => {
+export const calculateExercises = (dailyHours: number[], target: number): Result => {
   const periodLength = dailyHours.length;
   const trainingDays = dailyHours.filter(h => h > 0).length;
   const average = dailyHours.reduce((sum, h) => sum + h, 0) / periodLength;
@@ -56,13 +56,15 @@ const calculateExercises = (dailyHours: number[], target: number): Result => {
   return { periodLength, trainingDays, success, rating, ratingDescription, target, average };
 };
 
-try {
-  const { target, dailyHours } = parseExerciseArguments(process.argv.slice(2));
-  console.log(calculateExercises(dailyHours, target));
-} catch (error: unknown) {
-  let message = 'Something went wrong.';
-  if (error instanceof Error) {
-    message += ' Error: ' + error.message;
-  }
-  console.log(message);
+if (import.meta.main) {
+    try {
+        const { target, dailyHours } = parseExerciseArguments(process.argv.slice(2));
+        console.log(calculateExercises(dailyHours, target));
+    } catch (error: unknown) {
+        let message = 'Something went wrong.';
+        if (error instanceof Error) {
+            message += ' Error: ' + error.message;
+    }
+        console.log(message);
+    }
 }

@@ -5,7 +5,7 @@ import { calculateExercises } from './exerciseCalculator.ts';
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
     res.send('Hello Full Stack!');
@@ -32,7 +32,7 @@ app.get('/bmi', (req, res) => {
 app.post('/exercises', (req, res) => {
   const body: unknown = req.body;
 
-  console.log('Body: ', req.body)
+  console.log('Body: ', req.body);
 
   if (
     typeof body !== 'object' || body === null ||

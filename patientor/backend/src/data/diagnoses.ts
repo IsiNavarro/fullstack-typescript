@@ -80,4 +80,4 @@ const diagnoses: Diagnosis[] = [
   }
 ];
 
-export {diagnoses};
+export { diagnoses };

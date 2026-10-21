@@ -1,5 +1,15 @@
 import { Gender, type NewPatient } from './types.ts';
 
+import { z } from 'zod';
+
+export const NewPatientSchema = z.object({
+  name: z.string().min(1),
+  dateOfBirth: z.iso.date(),
+  ssn: z.string().min(1),
+  gender: z.enum(Gender),
+  occupation: z.string().min(1),
+});
+
 const isString = (value: unknown): value is string => {
   return typeof value === 'string' || value instanceof String;
 };

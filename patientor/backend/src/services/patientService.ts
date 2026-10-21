@@ -14,11 +14,11 @@ export const getNonSensitivePatients = (): NonSensitivePatient[] => {
   return patients.map(toNonSensitivePatient);
 };
 
-export const addPatient = (patient: NewPatient): NonSensitivePatient => {
+export const addPatient = (patient: NewPatient): Patient => {
   const newPatient: Patient = {
     id: uuid(),
     ...patient,
   };
   patients.push(newPatient);
-  return toNonSensitivePatient(newPatient);
+  return newPatient;
 };

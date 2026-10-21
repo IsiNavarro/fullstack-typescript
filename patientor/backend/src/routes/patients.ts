@@ -1,6 +1,7 @@
 import express from 'express';
 import { addPatient, getNonSensitivePatients } from '../services/patientService.ts';
 import { NewPatientSchema } from '../utils.ts';
+import z from 'zod';
 
 const router = express.Router();
 
@@ -12,12 +13,12 @@ router.post('/', (req, res) => {
   const result = NewPatientSchema.safeParse(req.body);
 
   if (!result.success) {
-    res.status(400).json({ error: result.error.issues });
+    res.status(400).send(z.prettifyError(result.error));
     return;
   }
 
   const addedPatient = addPatient(result.data);
-  res.status(201).json(addedPatient);
+  res.json(addedPatient);
 });
 
 export { router as patientRouter };

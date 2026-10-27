@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { createDiary, getAllDiaries } from './services/diaryService';
 import { NewDiaryForm } from './components/NewDiaryForm';
 import type { NewDiaryEntry, NonSensitiveDiaryEntry } from './types';
 
 const App = () => {
   const [diaries, setDiaries] = useState<NonSensitiveDiaryEntry[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDiaries = async () => {
@@ -14,13 +16,34 @@ const App = () => {
     void fetchDiaries();
   }, []);
 
+  const showError = (message: string) => {
+    setErrorMessage(message);
+    setTimeout(() => setErrorMessage(null), 5000);
+  };
+
   const addDiary = async (entry: NewDiaryEntry) => {
-    const added = await createDiary(entry);
-    setDiaries(diaries.concat(added));
+    try {
+      const added = await createDiary(entry);
+      setDiaries(diaries.concat(added));
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const data: unknown = error.response?.data;
+        if (typeof data === 'string') {
+          showError(data);
+        } else if (data) {
+          showError(JSON.stringify(data));
+        } else {
+          showError(error.message);
+        }
+      } else {
+        showError('Unknown error');
+      }
+    }
   };
 
   return (
     <div>
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <NewDiaryForm onSubmit={(entry) => void addDiary(entry)} />
       <h2>Diary entries</h2>
       {diaries.map(diary => (
